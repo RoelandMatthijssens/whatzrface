@@ -1,16 +1,20 @@
 import React from 'react'
-import { Navbar as NavbarBootstrap } from 'react-bootstrap'
+import { Navbar, Nav, NavDropdown, Form, FormControl, Button } from 'react-bootstrap'
+import { Link } from 'react-router-dom';
 
-const Navbar = () => {
-    return <NavbarBootstrap bg="dark" variant="dark">
-        <NavbarBootstrap.Brand href="#home">NavbarBootstrap with text</NavbarBootstrap.Brand>
-        <NavbarBootstrap.Toggle />
-        <NavbarBootstrap.Collapse className="justify-content-end">
-            <NavbarBootstrap.Text>
-                Signed in as: <a href="#login">Mark Otto</a>
-            </NavbarBootstrap.Text>
-        </NavbarBootstrap.Collapse>
-    </NavbarBootstrap>
+const MyNavbar = () => {
+    return (
+        <Navbar bg="light" expand="lg">
+            <Navbar.Brand as={Link} to="/">React-Bootstrap</Navbar.Brand>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+                <Nav className="mr-auto">
+                    <Nav.Link as={Link} to="home">Home</Nav.Link>
+                    <Nav.Link as={Link} to="about">About</Nav.Link>
+                </Nav>
+            </Navbar.Collapse>
+        </Navbar>
+    )
 }
 
-export default Navbar
+export default MyNavbar

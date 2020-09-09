@@ -10,6 +10,9 @@ function App() {
   return (
     <Router>
       <Switch>
+        <Route exact strict path="/">
+          <HomePage />
+        </Route>
         <Route exact strict path="/home">
           <HomePage />
         </Route>

@@ -1,11 +1,13 @@
 
 import React from 'react'
+import { BasicLayout } from '../components/layout'
+
 
 const AboutPage = () => {
     return (
-        <div>
-            about
-        </div>
+        <BasicLayout>
+            AboutPage content
+        </BasicLayout>
     )
 }
 
