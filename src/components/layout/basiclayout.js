@@ -11,9 +11,7 @@ const BasicLayout = ({ children }) => {
                 </Col>
             </Row>
             <Row>
-                <Col>
-                    {children}
-                </Col>
+                {children}
             </Row>
         </Container>
     )

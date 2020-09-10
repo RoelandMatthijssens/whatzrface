@@ -1,2 +1,4 @@
 import Navbar from './navbar'
-export { Navbar }
+import Celeb from './celeb'
+import CelebForm from './celebform'
+export { Navbar, Celeb, CelebForm }
