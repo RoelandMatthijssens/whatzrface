@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Formik } from 'formik';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Alert } from 'react-bootstrap';
 import { levenshteinDistance } from '../utils'
 import * as Yup from 'yup';
 
@@ -10,6 +10,18 @@ const CelebForm = ({ person }) => {
         guess: Yup.string()
             .required("*Name is required"),
     });
+    const [distance, setDistance] = useState(-1)
+    const getMessage = (distance) => {
+        if (distance < 0) {
+            return
+        } else if (distance === 0) {
+            return <Alert variant="success">nice!</Alert>
+        } else if (distance <= Math.ceil(person.name.length * 0.1)) {
+            return <Alert variant="secondary"> eh, close enough!</Alert>
+        } else {
+            return <Alert variant="danger">Noob!</Alert>
+        }
+    }
     return (
         <div>
             <Formik
@@ -17,15 +29,8 @@ const CelebForm = ({ person }) => {
                 initialValues={{ guess: '' }}
                 onSubmit={({ guess }, { setSubmitting, resetForm }) => {
                     setSubmitting(true)
-                    const distance = levenshteinDistance(person.name.toLowerCase(), guess.toLowerCase())
+                    setDistance(levenshteinDistance(person.name.toLowerCase(), guess.toLowerCase()))
                     console.table(distance, guess, person.name, Math.ceil(person.name.length * 0.1))
-                    if (distance === 0) {
-                        console.log('nice!')
-                    } else if (distance <= Math.ceil(person.name.length * 0.1)) {
-                        console.log('eh, close enough!')
-                    } else {
-                        console.log('Noob!')
-                    }
                     setSubmitting(false);
                 }}
             >
@@ -55,6 +60,7 @@ const CelebForm = ({ person }) => {
                         </Form>
                     )}
             </Formik>
+            {getMessage(distance)}
         </div >
     )
 }
