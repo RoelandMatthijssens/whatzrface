@@ -1,23 +1,32 @@
 import React from 'react'
 import { Formik } from 'formik';
 import { Form, Button } from 'react-bootstrap';
+import { levenshteinDistance } from '../utils'
 import * as Yup from 'yup';
-import styled from 'styled-components'
-
 
 const CelebForm = ({ person }) => {
     const gender = person.gender
     const validationSchema = Yup.object().shape({
-        celeb_name: Yup.string()
+        guess: Yup.string()
             .required("*Name is required"),
     });
     return (
         <div>
             <Formik
                 validationSchema={validationSchema}
-                initialValues={{ celeb_name: '' }}
-                onSubmit={(values) => {
-                    alert(JSON.stringify(values, null, 2));
+                initialValues={{ guess: '' }}
+                onSubmit={({ guess }, { setSubmitting, resetForm }) => {
+                    setSubmitting(true)
+                    const distance = levenshteinDistance(person.name.toLowerCase(), guess.toLowerCase())
+                    console.table(distance, guess, person.name, Math.ceil(person.name.length * 0.1))
+                    if (distance === 0) {
+                        console.log('nice!')
+                    } else if (distance <= Math.ceil(person.name.length * 0.1)) {
+                        console.log('eh, close enough!')
+                    } else {
+                        console.log('Noob!')
+                    }
+                    setSubmitting(false);
                 }}
             >
                 {({
@@ -29,15 +38,15 @@ const CelebForm = ({ person }) => {
                     handleSubmit,
                     isSubmitting,
                 }) => (
-                        <Form>
+                        <Form onSubmit={handleSubmit} >
                             <Form.Group controlId="formName">
                                 <Form.Control
                                     type="text"
-                                    name="celeb_name"
+                                    name="guess"
                                     placeholder={`Whatz${gender === 'M' ? 'iz' : 'r'} Face?`}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    value={values.celeb_name}
+                                    value={values.guess}
                                 />
                             </Form.Group>
                             <Button variant="primary" type="submit" disabled={isSubmitting}>
@@ -46,7 +55,7 @@ const CelebForm = ({ person }) => {
                         </Form>
                     )}
             </Formik>
-        </div>
+        </div >
     )
 }
 
