@@ -1,12 +1,19 @@
 import React from 'react'
 import { Image } from 'react-bootstrap';
-import robert from '../assets/images/robert.jpg'
+import { loadImage, slugify } from '../utils'
+import styled from 'styled-components'
 
-function Celeb() {
+const ImageWrapper = styled.div`
+    width: 500px;
+    height: 900px;
+`
+
+function Celeb({ person }) {
+    const image = loadImage(`people/${slugify(person.name)}`)
     return (
-        <div>
-            <Image src={robert} fluid />
-        </div>
+        <ImageWrapper>
+            <Image src={image} fluid />
+        </ImageWrapper>
     )
 }
 

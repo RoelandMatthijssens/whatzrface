@@ -1,16 +1,19 @@
 import React from 'react'
+import { sample } from '../utils'
 import { BasicLayout } from '../components/layout'
 import { Celeb, CelebForm } from '../components'
 import { Col } from 'react-bootstrap';
 
-const HomePage = () => {
+const HomePage = ({ people }) => {
+    const person = sample(people)
+    console.log(person)
     return (
         <BasicLayout>
             <Col>
-                <Celeb />
+                <Celeb person={person} />
             </Col>
             <Col>
-                <CelebForm gender="M" />
+                <CelebForm person={person} />
             </Col>
         </BasicLayout>
     )

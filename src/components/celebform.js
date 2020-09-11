@@ -5,7 +5,8 @@ import * as Yup from 'yup';
 import styled from 'styled-components'
 
 
-const CelebForm = ({ gender }) => {
+const CelebForm = ({ person }) => {
+    const gender = person.gender
     const validationSchema = Yup.object().shape({
         celeb_name: Yup.string()
             .required("*Name is required"),
