@@ -48,7 +48,7 @@ const CelebForm = ({ person }) => {
                                 <Form.Control
                                     type="text"
                                     name="guess"
-                                    placeholder={`Whatz${gender === 'M' ? 'iz' : 'r'} Face?`}
+                                    placeholder={`Whatz${gender === 'Male' ? 'iz' : 'r'} Face?`}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     value={values.guess}

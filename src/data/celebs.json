@@ -14,5 +14,9 @@
     {
         "name": "Wolfgang Amadeus Mozart",
         "gender": "Male"
+    },
+    {
+        "name": "Marie Curie",
+        "gender": "Female"
     }
 ]
