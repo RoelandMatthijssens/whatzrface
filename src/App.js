@@ -3,7 +3,6 @@ import './App.css';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Switch from 'react-bootstrap/esm/Switch';
 import { HomePage, AboutPage } from './pages'
-import celebs from './data/celebs';
 import { SparqlClient, sample, levenshteinDistance } from './utils';
 
 function App() {
@@ -30,6 +29,15 @@ function App() {
     setGuessResult(getGuessResult(guess))
     setSubmitting(false)
   }
+  const next = () => {
+    setAllActors(allActors => {
+      console.log(allActors)
+      allActors[currentActor.actorLabel].guessed = true
+      console.log(allActors)
+      return allActors
+    })
+    setNextActor(allActors)
+  }
 
   const getGuessResult = (guess) => {
     const distance = levenshteinDistance(currentActor.actorLabel.toLowerCase(), guess.toLowerCase())
@@ -49,10 +57,10 @@ function App() {
     <Router>
       <Switch>
         <Route exact strict path="/">
-          <HomePage currentActor={currentActor} chooseInitialActor={chooseInitialActor} makeGuess={makeGuess} guessCount={guessCount} guessResult={guessResult} />
+          <HomePage currentActor={currentActor} chooseInitialActor={chooseInitialActor} makeGuess={makeGuess} next={next} guessCount={guessCount} guessResult={guessResult} />
         </Route>
         <Route exact strict path="/home">
-          <HomePage currentActor={currentActor} chooseInitialActor={chooseInitialActor} makeGuess={makeGuess} guessCount={guessCount} guessResult={guessResult} />
+          <HomePage currentActor={currentActor} chooseInitialActor={chooseInitialActor} makeGuess={makeGuess} next={next} guessCount={guessCount} guessResult={guessResult} />
         </Route>
         <Route exact strict path="/about">
           <AboutPage />

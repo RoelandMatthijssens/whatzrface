@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Form, Button, Row, Col, Image, Alert } from 'react-bootstrap';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-const GuessForm = ({ currentActor, makeGuess, message, guessCount, guessResult }) => {
+const GuessForm = ({ currentActor, makeGuess, next, guessCount, guessResult }) => {
     const validationSchema = Yup.object().shape({
         guess: Yup.string()
             .required("*Name is required"),
@@ -23,6 +23,15 @@ const GuessForm = ({ currentActor, makeGuess, message, guessCount, guessResult }
             return ''
         }
     }
+    const getNextButton = () => {
+        if (['EXACT', 'CLOSE_ENOUGH'].includes(guessResult)) {
+            return <Button onClick={next} variant="success" type="button">Next</Button >
+        } else if (guessCount > 0) {
+            return <Button onClick={next} variant="danger" type="button">Skip</Button >
+        } else {
+            return ''
+        }
+    }
     console.log(currentActor.actorLabel)
     return (
         <Row>
@@ -34,10 +43,6 @@ const GuessForm = ({ currentActor, makeGuess, message, guessCount, guessResult }
                     validationSchema={validationSchema}
                     initialValues={{ guess: '' }}
                     onSubmit={makeGuess}
-                //     ({ guess }, { setSubmitting, resetForm }) => {
-                //     setSubmitting(true)
-                //     setDistance(levenshteinDistance(currentActor.actorLabel.toLowerCase(), guess.toLowerCase()))
-                //     setSubmitting(false);
                 >
                     {({
                         values,
@@ -61,6 +66,7 @@ const GuessForm = ({ currentActor, makeGuess, message, guessCount, guessResult }
                                 </Form.Group>
                                 {getMessage()}
                                 <Button variant="primary" type="submit" disabled={isSubmitting}>Submit</Button >
+                                {getNextButton()}
                             </Form>
                         )}
                 </Formik>
