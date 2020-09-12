@@ -33,11 +33,12 @@ class SparqlClient {
 
     async getActorsForMovie(movie, limit = 10) {
         const query = `
-            SELECT distinct ?movie ?movieLabel ?actor ?actorLabel
+            SELECT distinct ?movie ?movieLabel ?actor ?actorLabel ?genderLabel
             WHERE {
                 ?movie wdt:P31/wdt:P279* wd:Q11424.
                 ?movie rdfs:label "${movie.movieLabel}"@en.
                 ?movie wdt:P161 ?actor.
+                ?actor wdt:P21 ?gender
                 OPTIONAL { ?actor wdt:P2218 ?netWorth }.
                 SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
             }
@@ -57,10 +58,11 @@ class SparqlClient {
 
     async getDetailsForActor(name, limit = 1) {
         const query = `
-            SELECT distinct ?actor ?actorLabel ?image
+            SELECT distinct ?actor ?actorLabel ?image ?genderLabel
             WHERE {
                 ?actor rdfs:label "${name}"@en.
                 ?actor wdt:P106 ?occupation.
+                ?actor wdt:P21 ?gender
                 OPTIONAL{?actor wdt:P18 ?image}.
                 ?occupation wdt:P279* wd:Q33999.
                 SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
@@ -79,14 +81,10 @@ class SparqlClient {
                 return this.getActorsForMovies(movies)
             })
             .then((actorGroups) => {
-                console.log(actorGroups)
                 const actors = {}
                 for (const actorGroup of actorGroups) {
                     for (const actor of actorGroup) {
                         const name = actor.actorLabel
-                        if (actorName === name) {
-                            continue;
-                        }
                         const movie = {
                             movieLabel: actor.movieLabel,
                             movie: actor.movie,
@@ -95,14 +93,15 @@ class SparqlClient {
                             actors[name].movies.push(movie)
                         } else {
                             actors[name] = {
+                                guessed: actorName === name,
                                 actorLabel: name,
                                 actor: actor.actor,
+                                genderLabel: actor.genderLabel,
                                 movies: [movie],
                             }
                         }
                     }
                 }
-                console.log(actors)
                 return actors
             })
     }
