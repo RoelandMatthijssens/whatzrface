@@ -33,12 +33,13 @@ class SparqlClient {
 
     async getActorsForMovie(movie, limit = 10) {
         const query = `
-            SELECT distinct ?movie ?movieLabel ?actor ?actorLabel ?genderLabel
+            SELECT distinct ?movie ?movieLabel ?actor ?actorLabel ?genderLabel ?image
             WHERE {
                 ?movie wdt:P31/wdt:P279* wd:Q11424.
                 ?movie rdfs:label "${movie.movieLabel}"@en.
                 ?movie wdt:P161 ?actor.
-                ?actor wdt:P21 ?gender
+                ?actor wdt:P21 ?gender.
+                ?actor wdt:P18 ?image.
                 OPTIONAL { ?actor wdt:P2218 ?netWorth }.
                 SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
             }
@@ -96,6 +97,7 @@ class SparqlClient {
                                 guessed: actorName === name,
                                 actorLabel: name,
                                 actor: actor.actor,
+                                image: actor.image,
                                 genderLabel: actor.genderLabel,
                                 movies: [movie],
                             }
