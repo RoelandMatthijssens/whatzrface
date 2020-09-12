@@ -1,20 +1,27 @@
 
 import React, { useState } from 'react'
 import { BasicLayout } from '../components/layout'
-import { Form, Button, Row, Col, Image } from 'react-bootstrap';
+import { Form, Button, Row, Col, Image, Alert } from 'react-bootstrap';
 import { SparqlClient } from '../utils';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
 const AboutPage = () => {
     const client = new SparqlClient()
+    const [message, setMessage] = useState('')
     const [image, setImage] = useState('')
     const [actors, setActors] = useState({})
     const onClick = ({ name }, { setSubmitting, resetForm }) => {
         setSubmitting(true)
+        setMessage('')
         client.getDetailsForActor(name)
             .then((actor) => {
-                setImage(actor.image)
+                if (actor) {
+                    setImage(actor.image)
+                } else {
+                    setMessage("actor not found")
+                }
+
                 setSubmitting(false)
                 resetForm()
             })
@@ -35,7 +42,7 @@ const AboutPage = () => {
                 <Col>
                     <Formik
                         validationSchema={validationSchema}
-                        initialValues={{ name: 'Vin Diesel' }}
+                        initialValues={{ name: '' }}
                         onSubmit={onClick}
                     >
                         {({
@@ -60,7 +67,8 @@ const AboutPage = () => {
                                     </Form.Group>
                                     <Button variant="primary" type="submit" disabled={isSubmitting}>
                                         Submit
-                            </Button >
+                                    </Button >
+                                    {message ? <Alert variant="warning">{message}</Alert> : ''}
                                 </Form>
                             )}
                     </Formik>
