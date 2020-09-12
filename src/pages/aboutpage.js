@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react'
 import { BasicLayout } from '../components/layout'
-import { Form, Button, Row, Col, Image, Container } from 'react-bootstrap';
+import { Form, Button, Row, Col, Image } from 'react-bootstrap';
 import { SparqlClient } from '../utils';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -9,18 +9,18 @@ import * as Yup from 'yup';
 const AboutPage = () => {
     const client = new SparqlClient()
     const [image, setImage] = useState('')
+    const [actors, setActors] = useState({})
     const onClick = ({ name }, { setSubmitting, resetForm }) => {
         setSubmitting(true)
         client.getDetailsForActor(name)
-            .then((result) => {
-                console.log(result)
-                setImage(result.image)
+            .then((actor) => {
+                setImage(actor.image)
                 setSubmitting(false)
                 resetForm()
             })
-        // client.getMoviesForActor('Robert Pattinson')
-        //     .then((result) => {
-        //     })
+        client.getRelatedActors(name)
+            .then(setActors)
+
     }
     const validationSchema = Yup.object().shape({
         name: Yup.string()
@@ -35,7 +35,7 @@ const AboutPage = () => {
                 <Col>
                     <Formik
                         validationSchema={validationSchema}
-                        initialValues={{ name: '' }}
+                        initialValues={{ name: 'Vin Diesel' }}
                         onSubmit={onClick}
                     >
                         {({
@@ -66,7 +66,34 @@ const AboutPage = () => {
                     </Formik>
                 </Col>
             </Row>
-        </BasicLayout>
+            <Row>
+                <Col>
+                    <ul>
+                        {
+                            Object.values(actors).map((actor) => {
+                                return (
+                                    <li key={actor.actorLabel}>
+                                        {actor.actorLabel}
+                                        <ul>
+                                            {
+                                                actor.movies.map((movie) => {
+                                                    return (
+                                                        <li key={movie.movieLabel}>
+                                                            {movie.movieLabel}
+                                                        </li>
+
+                                                    )
+                                                })
+                                            }
+                                        </ul>
+                                    </li>
+                                )
+                            })
+                        }
+                    </ul>
+                </Col>
+            </Row>
+        </BasicLayout >
     )
 }
 

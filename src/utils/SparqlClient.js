@@ -14,9 +14,9 @@ class SparqlClient {
             .then(this.parseSparqlResult)
     }
 
-    async getMoviesForActor(name, limit = 25) {
+    async getMoviesForActor(name, limit = 10) {
         const query = `
-            SELECT distinct ?actor ?actorLabel ?movie ?movieLabel ?boxOffice
+            SELECT distinct ?movie ?movieLabel
             WHERE {
                 ?actor rdfs:label "${name}"@en.
                 ?actor wdt:P106 ?occupation.
@@ -29,6 +29,30 @@ class SparqlClient {
             limit ${limit}
         `
         return this.sparql(query)
+    }
+
+    async getActorsForMovie(movie, limit = 10) {
+        const query = `
+            SELECT distinct ?movie ?movieLabel ?actor ?actorLabel
+            WHERE {
+                ?movie wdt:P31/wdt:P279* wd:Q11424.
+                ?movie rdfs:label "${movie.movieLabel}"@en.
+                ?movie wdt:P161 ?actor.
+                OPTIONAL { ?actor wdt:P2218 ?netWorth }.
+                SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+            }
+            order by DESC(?netWorth)
+            limit ${limit}
+        `
+        return this.sparql(query)
+    }
+
+    async getActorsForMovies(movies) {
+        return await Promise.all(
+            movies.map(async (movie) => {
+                return await this.getActorsForMovie(movie)
+            })
+        )
     }
 
     async getDetailsForActor(name, limit = 1) {
@@ -49,8 +73,41 @@ class SparqlClient {
             })
     }
 
+    async getRelatedActors(actorName) {
+        return this.getMoviesForActor(actorName)
+            .then((movies) => {
+                return this.getActorsForMovies(movies)
+            })
+            .then((actorGroups) => {
+                console.log(actorGroups)
+                const actors = {}
+                for (const actorGroup of actorGroups) {
+                    for (const actor of actorGroup) {
+                        const name = actor.actorLabel
+                        if (actorName === name) {
+                            continue;
+                        }
+                        const movie = {
+                            movieLabel: actor.movieLabel,
+                            movie: actor.movie,
+                        }
+                        if (name in actors) {
+                            actors[name].movies.push(movie)
+                        } else {
+                            actors[name] = {
+                                actorLabel: name,
+                                actor: actor.actor,
+                                movies: [movie],
+                            }
+                        }
+                    }
+                }
+                console.log(actors)
+                return actors
+            })
+    }
+
     parseSparqlResult({ results }) {
-        console.log(results)
         const parseField = ({ type, value }) => {
             switch (type) {
                 case "literal":
