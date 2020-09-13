@@ -1,0 +1,31 @@
+{
+  "files": {
+    "main.css": "/whatzrface/static/css/main.5f361e03.chunk.css",
+    "main.js": "/whatzrface/static/js/main.98a55d6e.chunk.js",
+    "main.js.map": "/whatzrface/static/js/main.98a55d6e.chunk.js.map",
+    "runtime-main.js": "/whatzrface/static/js/runtime-main.cc91f313.js",
+    "runtime-main.js.map": "/whatzrface/static/js/runtime-main.cc91f313.js.map",
+    "static/css/2.11829350.chunk.css": "/whatzrface/static/css/2.11829350.chunk.css",
+    "static/js/2.ec13f0ba.chunk.js": "/whatzrface/static/js/2.ec13f0ba.chunk.js",
+    "static/js/2.ec13f0ba.chunk.js.map": "/whatzrface/static/js/2.ec13f0ba.chunk.js.map",
+    "index.html": "/whatzrface/index.html",
+    "precache-manifest.8778dd500366085318ab7da6d8b9cdbf.js": "/whatzrface/precache-manifest.8778dd500366085318ab7da6d8b9cdbf.js",
+    "service-worker.js": "/whatzrface/service-worker.js",
+    "static/css/2.11829350.chunk.css.map": "/whatzrface/static/css/2.11829350.chunk.css.map",
+    "static/css/main.5f361e03.chunk.css.map": "/whatzrface/static/css/main.5f361e03.chunk.css.map",
+    "static/js/2.ec13f0ba.chunk.js.LICENSE.txt": "/whatzrface/static/js/2.ec13f0ba.chunk.js.LICENSE.txt",
+    "static/media/barack-obama.jpg": "/whatzrface/static/media/barack-obama.3d65446b.jpg",
+    "static/media/dummyPerson.jpg": "/whatzrface/static/media/dummyPerson.9a77ac29.jpg",
+    "static/media/elon-musk.jpg": "/whatzrface/static/media/elon-musk.3c3f6866.jpg",
+    "static/media/marie-curie.jpg": "/whatzrface/static/media/marie-curie.a4112ba3.jpg",
+    "static/media/robert-pattinson.jpg": "/whatzrface/static/media/robert-pattinson.b036345d.jpg",
+    "static/media/wolfgang-amadeus-mozart.jpg": "/whatzrface/static/media/wolfgang-amadeus-mozart.dc1b1c11.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.cc91f313.js",
+    "static/css/2.11829350.chunk.css",
+    "static/js/2.ec13f0ba.chunk.js",
+    "static/css/main.5f361e03.chunk.css",
+    "static/js/main.98a55d6e.chunk.js"
+  ]
+}
