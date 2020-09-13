@@ -1,6 +1,6 @@
 import React from 'react';
 import { BasicLayout } from '../components/layout';
-import { Row, Col, Card, CardDeck, CardColumns } from 'react-bootstrap';
+import { Row, Col, Card, CardColumns } from 'react-bootstrap';
 
 function ActorCard({ actor }) {
     return (

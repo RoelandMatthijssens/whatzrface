@@ -1,10 +1,6 @@
 
-import React, { useState } from 'react'
+import React from 'react'
 import { BasicLayout } from '../components/layout'
-import { Form, Button, Row, Col, Image, Alert } from 'react-bootstrap';
-import { SparqlClient } from '../utils';
-import { Formik } from 'formik';
-import * as Yup from 'yup';
 
 const AboutPage = () => {
     return (
