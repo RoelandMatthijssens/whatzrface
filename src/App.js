@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Switch from 'react-bootstrap/esm/Switch';
-import { HomePage, AboutPage } from './pages'
+import { PlayPage, AboutPage, HomePage, MissedPage } from './pages'
 import { SparqlClient, sample, levenshteinDistance } from './utils';
 
 function App() {
@@ -92,10 +92,13 @@ function App() {
     <Router>
       <Switch>
         <Route exact strict path="/">
-          <HomePage currentActor={currentActor} chooseInitialActor={chooseInitialActor} makeGuess={makeGuess} next={next} guessCount={guessCount} guessResult={guessResult} />
+          <HomePage />
         </Route>
-        <Route exact strict path="/home">
-          <HomePage currentActor={currentActor} chooseInitialActor={chooseInitialActor} makeGuess={makeGuess} next={next} guessCount={guessCount} guessResult={guessResult} />
+        <Route exact strict path="/play">
+          <PlayPage currentActor={currentActor} chooseInitialActor={chooseInitialActor} makeGuess={makeGuess} next={next} guessCount={guessCount} guessResult={guessResult} />
+        </Route>
+        <Route exact strict path="/missed">
+          <MissedPage actors={allActors} />
         </Route>
         <Route exact strict path="/about">
           <AboutPage />

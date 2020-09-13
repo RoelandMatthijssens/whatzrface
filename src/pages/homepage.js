@@ -1,18 +1,11 @@
-import React from 'react'
-import { BasicLayout } from '../components/layout'
-import { ChooseStartActorForm, GuessForm } from '../components'
+import React from 'react';
+import { BasicLayout } from '../components/layout';
 
-const HomePage = ({ currentActor, chooseInitialActor, makeGuess, next, guessCount, guessResult }) => {
+function HomePage() {
     return (
         <BasicLayout>
-            {currentActor ?
-                <GuessForm currentActor={currentActor} makeGuess={makeGuess} next={next} guessCount={guessCount} guessResult={guessResult} />
-                :
-                <ChooseStartActorForm chooseInitialActor={chooseInitialActor} />
-            }
+            Welcome
         </BasicLayout>
     )
 }
-
-
 export default HomePage
