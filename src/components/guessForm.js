@@ -33,10 +33,8 @@ const GuessForm = ({ currentActor, makeGuess, next, guessCount, guessResult }) =
         }
         if (['EXACT', 'CLOSE_ENOUGH'].includes(guessResult)) {
             return <Button onClick={nextAndClear} variant="success" type="button">Next</Button >
-        } else if (guessCount > 0) {
-            return <Button onClick={nextAndClear} variant="danger" type="button">Skip</Button >
         } else {
-            return ''
+            return <Button onClick={nextAndClear} variant="danger" type="button">Skip</Button >
         }
     }
     const getHint = (setFieldValue) => {
