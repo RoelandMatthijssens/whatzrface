@@ -1,8 +1,30 @@
 import React, { useState } from 'react'
-import { Form, Button, Row, Col, Image, Alert, Table } from 'react-bootstrap';
+import { Form, Button, Row, Col, Image, Alert, Table, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { Formik } from 'formik';
 import { truncate } from '../utils';
 import * as Yup from 'yup';
+
+function TruncatedMovieTitle({ movie }) {
+    const renderTooltip = (props) => (
+        <Tooltip id="button-tooltip" {...props}>
+            {movie.movieLabel}
+        </Tooltip>
+    );
+
+    if (movie.movieLabel.length > 20) {
+        return (<OverlayTrigger
+            delay={{ show: 150, hide: 200 }}
+            overlay={renderTooltip}
+            placement="top"
+        >
+            <span>{truncate(movie.movieLabel, 20)}</span>
+        </OverlayTrigger >
+        )
+    } else {
+        return truncate(movie.movieLabel, 20)
+    }
+}
+
 
 const GuessForm = ({ currentActor, makeGuess, next, guessCount, guessResult }) => {
     const [hints, setHints] = useState(0)
@@ -66,7 +88,7 @@ const GuessForm = ({ currentActor, makeGuess, next, guessCount, guessResult }) =
                                     {actor1.actorLabel}
                                 </td>
                                 <td>
-                                    {truncate(movie.movieLabel, 20)}
+                                    <TruncatedMovieTitle movie={movie} />
                                 </td>
                                 <td>
                                     {index === currentActor.relatedActorsPath.length - 1 ? <b>{slogan}</b> : actor2.actorLabel}
