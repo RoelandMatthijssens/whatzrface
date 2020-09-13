@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Form, Button, Row, Col, Image, Alert, Table } from 'react-bootstrap';
 import { Formik } from 'formik';
 import { truncate } from '../utils';
 import * as Yup from 'yup';
 
 const GuessForm = ({ currentActor, makeGuess, next, guessCount, guessResult }) => {
+    const [hints, setHints] = useState(0)
     const validationSchema = Yup.object().shape({
         guess: Yup.string()
             .required("*Name is required"),
@@ -26,6 +27,7 @@ const GuessForm = ({ currentActor, makeGuess, next, guessCount, guessResult }) =
     }
     const getNextButton = (resetForm) => {
         const nextAndClear = () => {
+            setHints(0)
             resetForm()
             next()
         }
@@ -36,6 +38,11 @@ const GuessForm = ({ currentActor, makeGuess, next, guessCount, guessResult }) =
         } else {
             return ''
         }
+    }
+    const getHint = (setFieldValue) => {
+        const prefill = currentActor.actorLabel.slice(0, hints + 1)
+        setHints(hints => hints + 1)
+        setFieldValue('guess', prefill)
     }
     const slogan = `Whatz${currentActor.genderLabel === 'female' ? 'r' : 'iz'} Face?`
     return (
@@ -86,7 +93,8 @@ const GuessForm = ({ currentActor, makeGuess, next, guessCount, guessResult }) =
                         handleBlur,
                         handleSubmit,
                         isSubmitting,
-                        resetForm
+                        resetForm,
+                        setFieldValue,
                     }) => (
                             <Form onSubmit={handleSubmit} >
                                 <Form.Group controlId="formName">
@@ -101,6 +109,7 @@ const GuessForm = ({ currentActor, makeGuess, next, guessCount, guessResult }) =
                                 </Form.Group>
                                 {getMessage()}
                                 <Button variant="primary" type="submit" disabled={isSubmitting}>Submit</Button >
+                                <Button variant="secondary" type="button" disabled={isSubmitting} onClick={() => { getHint(setFieldValue) }}>Hint!</Button >
                                 {getNextButton(resetForm)}
                             </Form>
                         )}

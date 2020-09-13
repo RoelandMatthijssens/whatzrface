@@ -19,7 +19,6 @@ function MissedPage({ actors }) {
     const missedActors = Object.values(actors).filter((actor) => {
         return !actor.guessed && actor.encountered
     })
-    console.log(actors, missedActors)
     return (
         <BasicLayout>
             <h1>you missed {missedActors.length} actors</h1>
