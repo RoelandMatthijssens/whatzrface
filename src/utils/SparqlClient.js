@@ -14,7 +14,7 @@ class SparqlClient {
             .then(this.parseSparqlResult)
     }
 
-    async getMoviesForActor(name, limit = 10) {
+    async getMoviesForActor(name, limit = 5) {
         const query = `
             SELECT distinct ?movie ?movieLabel
             WHERE {
@@ -94,7 +94,8 @@ class SparqlClient {
                             actors[name].movies.push(movie)
                         } else {
                             actors[name] = {
-                                guessed: actorName === name,
+                                guessed: actorName === name ? true : null,
+                                encountered: actorName === name,
                                 actorLabel: name,
                                 actor: actor.actor,
                                 image: actor.image,

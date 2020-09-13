@@ -23,16 +23,19 @@ const GuessForm = ({ currentActor, makeGuess, next, guessCount, guessResult }) =
             return ''
         }
     }
-    const getNextButton = () => {
+    const getNextButton = (resetForm) => {
+        const nextAndClear = () => {
+            resetForm()
+            next()
+        }
         if (['EXACT', 'CLOSE_ENOUGH'].includes(guessResult)) {
-            return <Button onClick={next} variant="success" type="button">Next</Button >
+            return <Button onClick={nextAndClear} variant="success" type="button">Next</Button >
         } else if (guessCount > 0) {
-            return <Button onClick={next} variant="danger" type="button">Skip</Button >
+            return <Button onClick={nextAndClear} variant="danger" type="button">Skip</Button >
         } else {
             return ''
         }
     }
-    console.log(currentActor.actorLabel)
     return (
         <Row>
             <Col>
@@ -52,6 +55,7 @@ const GuessForm = ({ currentActor, makeGuess, next, guessCount, guessResult }) =
                         handleBlur,
                         handleSubmit,
                         isSubmitting,
+                        resetForm
                     }) => (
                             <Form onSubmit={handleSubmit} >
                                 <Form.Group controlId="formName">
@@ -66,7 +70,7 @@ const GuessForm = ({ currentActor, makeGuess, next, guessCount, guessResult }) =
                                 </Form.Group>
                                 {getMessage()}
                                 <Button variant="primary" type="submit" disabled={isSubmitting}>Submit</Button >
-                                {getNextButton()}
+                                {getNextButton(resetForm)}
                             </Form>
                         )}
                 </Formik>
