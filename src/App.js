@@ -13,7 +13,7 @@ function App() {
   const [guessResult, setGuessResult] = useState('')
   const [allActors, setAllActors] = useState([])
   const chooseInitialActor = (actor) => {
-    client.getRelatedActors(actor.actorLabel)
+    client.getRelatedActors(actor)
       .then((actors) => {
         setAllActors(actors)
         setNextActor(actors)
@@ -24,8 +24,7 @@ function App() {
   }
   const setNextActor = (actors) => {
     const nextActor = sample(unencounteredActors(actors))
-    console.log(`next to guess: ${nextActor.actorLabel} from the folowing movies:`)
-    console.table(nextActor.movies)
+    console.log(`next to guess: ${nextActor.actorLabel}`)
     setCurrentActor(nextActor)
   }
   const makeGuess = ({ guess }, { setSubmitting }) => {
@@ -42,14 +41,14 @@ function App() {
       return allActors
     })
     if (guessed && unencounteredActors(allActors).length < maxUnencounteredActors) {
-      populateRelatedActors(currentActor.actorLabel)
+      populateRelatedActors(currentActor)
     }
     setGuessCount(0)
     setGuessResult(null)
     setNextActor(allActors)
   }
-  const populateRelatedActors = (actorName) => {
-    client.getRelatedActors(actorName)
+  const populateRelatedActors = (actor) => {
+    client.getRelatedActors(actor)
       .then((newActors) => {
         setAllActors(allActors => {
           const newAllActors = mergeActors(allActors, newActors)

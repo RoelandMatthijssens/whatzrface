@@ -76,30 +76,31 @@ class SparqlClient {
             })
     }
 
-    async getRelatedActors(actorName) {
-        return this.getMoviesForActor(actorName)
+    async getRelatedActors(actor) {
+        return this.getMoviesForActor(actor.actorLabel)
             .then((movies) => {
                 return this.getActorsForMovies(movies)
             })
             .then((actorGroups) => {
                 const actors = {}
                 for (const actorGroup of actorGroups) {
-                    for (const actor of actorGroup) {
-                        const name = actor.actorLabel
+                    for (const relatedActor of actorGroup) {
+                        const name = relatedActor.actorLabel
                         const movie = {
-                            movieLabel: actor.movieLabel,
-                            movie: actor.movie,
+                            movieLabel: relatedActor.movieLabel,
+                            movie: relatedActor.movie,
                         }
                         if (name in actors) {
                             actors[name].movies.push(movie)
                         } else {
                             actors[name] = {
-                                guessed: actorName === name ? true : null,
-                                encountered: actorName === name,
+                                guessed: actor.actorLabel === name ? true : null,
+                                encountered: actor.actorLabel === name,
+                                relatedActorsPath: [...(actor.relatedActorsPath || []), [[actor, movie, relatedActor]]],
                                 actorLabel: name,
-                                actor: actor.actor,
-                                image: actor.image,
-                                genderLabel: actor.genderLabel,
+                                actor: relatedActor.actor,
+                                image: relatedActor.image,
+                                genderLabel: relatedActor.genderLabel,
                                 movies: [movie],
                             }
                         }

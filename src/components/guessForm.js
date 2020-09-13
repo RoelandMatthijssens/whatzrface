@@ -1,6 +1,7 @@
 import React from 'react'
-import { Form, Button, Row, Col, Image, Alert } from 'react-bootstrap';
+import { Form, Button, Row, Col, Image, Alert, Table } from 'react-bootstrap';
 import { Formik } from 'formik';
+import { truncate } from '../utils';
 import * as Yup from 'yup';
 
 const GuessForm = ({ currentActor, makeGuess, next, guessCount, guessResult }) => {
@@ -36,10 +37,40 @@ const GuessForm = ({ currentActor, makeGuess, next, guessCount, guessResult }) =
             return ''
         }
     }
+    const slogan = `Whatz${currentActor.genderLabel === 'female' ? 'r' : 'iz'} Face?`
     return (
         <Row>
             <Col>
                 <Image src={currentActor.image} fluid />
+                <Table striped bordered hover>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>original actor</th>
+                            <th>played in</th>
+                            <th>with</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {currentActor.relatedActorsPath.map(([[actor1, movie, actor2]], index) => {
+                            return (<tr key={`${actor1.actorLabel}|${movie.movieLabel}|${actor2.actorLabel}`}>
+                                <td>
+                                    {index + 1}
+                                </td>
+                                <td>
+                                    {actor1.actorLabel}
+                                </td>
+                                <td>
+                                    {truncate(movie.movieLabel, 20)}
+                                </td>
+                                <td>
+                                    {index === currentActor.relatedActorsPath.length - 1 ? <b>{slogan}</b> : actor2.actorLabel}
+                                </td>
+                            </tr>
+                            )
+                        })}
+                    </tbody>
+                </Table >
             </Col>
             <Col>
                 <Formik
@@ -62,7 +93,7 @@ const GuessForm = ({ currentActor, makeGuess, next, guessCount, guessResult }) =
                                     <Form.Control
                                         type="text"
                                         name="guess"
-                                        placeholder={`Whatz${currentActor.genderLabel === 'female' ? 'r' : 'iz'} Face?`}
+                                        placeholder={slogan}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         value={values.guess}
